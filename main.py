@@ -47,9 +47,9 @@ if __name__ == '__main__':
         if command == 'C':
             client_name = input('What is the client name?.\n')
             create_client(client_name)
-            list_client()
         elif command == 'D':
-            pass
+            client_name = input('What is the client name?.\n')
+            delete_client(client_name)
         elif command == 'L':
             list_client()
         elif command == 'E':
