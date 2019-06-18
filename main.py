@@ -16,6 +16,7 @@ def create_client(client_name):
 def delete_client(client_name):
     global clients
     if client_exists(client_name):
+        # clients = clients.replace(client_name, '')
         clients.remove(client_name)
     else:
         _message_system(2)
@@ -46,15 +47,17 @@ def _add_coma():
 
 def list_client():
     global clients
-    print(clients)
+    # print(clients)
+    for client in clients:
+        print(client)
 
 
-def _print_welcome():
-    print('WELCOME TO PLATZI VENTAS\n' + ('*' * 50))
+def _print_menu():
+    print(('*' * 50) + '\nWELCOME TO PLATZI VENTAS\n' + ('*' * 50))
     print('What do you like to do today?')
     print('[C]reate client.')
-    print('[D]elete client.')
     print('[U]pdate client.')
+    print('[D]elete client.')
     print('[L]ist clients')
     print('[E]xit')
 
@@ -74,11 +77,9 @@ def _get_cliente_name():
     return input('What is the client name?.\n').capitalize()
 
 
-if __name__ == '__main__':
-    _print_welcome()
-
+def crud_scheme():
     while True:
-        command = input('Option:\t').upper()
+        command = input('\nOption:\t').upper()
         
         if command == 'C':
             client_name = _get_cliente_name()
@@ -105,5 +106,13 @@ if __name__ == '__main__':
 
         else:
             _message_system(3)
+
+
+if __name__ == '__main__':
+    _print_menu()
+    
+    crud_scheme()
+
+
         
     
