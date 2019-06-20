@@ -1,111 +1,88 @@
 import sys
 
-# clients = list(('Ramiro', 'Daniel', 'Jose'))
 clients = [
     {
-        'name': 'Pablo',
-        'company': 'Google',
+        'name': 'pablo',
+        'company': 'google',
         'email': 'pablo@google.com',
-        'position': 'Software engineer',
+        'position': 'software engineer',
     },
     {
-        'name': 'Ricardo',
-        'company': 'Facebook',
+        'name': 'ricardo',
+        'company': 'facebook',
         'email': 'ricardo@facebook.com',
-        'position': 'Data engineer',
+        'position': 'data engineer',
     },
     {
-        'name': 'Jose',
-        'company': 'Apple',
+        'name': 'jose',
+        'company': 'apple',
         'email': 'jose@apple.com',
         'position': 'marketing chief',
     }]
 
+
+# Creación de Clientes
 def create_client(client):
     global clients
-    if client_exists(client):
-        _message_system(1)
+    if client_exists(client['name']):
+        _message_system(2.0)   
     else:
-        # clients += client_name
-        # _add_coma()
         clients.append(client)
        
 
-def delete_client(client):
+# Borrar Clientes
+def delete_client(client_id):
     global clients
-    if client_exists(client):
-        # clients = clients.replace(client_name, '')
-        clients.remove(client)
-    else:
-        _message_system(2)
+    
+    for idx, client in enumerate(clients):
+        if idx == client_id - 1:
+            del clients[idx] 
+            break
 
 
-def update_client(client_name, new_client_name):
+# Actualizar Informacion de Clientes
+def update_client(client_id, update_info_client):
     global clients
-    if client_exists(client_name):
-        # clients = clients.replace(client_name, new_client_name)
-        while True:
-            if client_exists(new_client_name):
-                _message_system(1)
-                new_client_name = _get_cliente_name(1)
-            else:
-                pos = clients.index(client_name) 
-                # clients.pop(pos)
-                # clients.insert(pos, new_client_name)
-                clients[pos] = new_client_name
-                break              
-    else:
-        _message_system(2)
 
-"""
-def search_client(client_name):
-    clients_list = clients.split(', ')
+    if len(clients) - 1 >= client_id:
+        clients[client_id - 1] = update_info_client        
+    
+    else:
+        _message_system(2.1)
+
+
+# Verificar si existe nombre de cliente en lista
+def client_exists(client_name):
+    global clients
+    
     for client in clients:
-        if client != client_name:
-            continue
-        else:
+        if client['name'] == client_name:
             return True
-"""
 
-def client_exists(client):
+
+def client_search(search_option, search_value):
     global clients
-    # if client_name+','in clients:
-    if client in clients:
-        return True
+    
+    for client in clients:
+        if client[search_option] == search_value:
+            _message_system(2.0)
+            return True
+        else:
+            _message_system(2.1)
+            return False 
 
-"""
-def _add_coma():
-    global clients
-    clients += ', '
-"""
 
+# Listar todos los clientes registrados
 def list_client():
     global clients
-    # print(clients)
+
     for idx, client in enumerate(clients):
-        print('{}: {}'.format(idx, client))
-
-
-def _print_menu():
-    print(('*' * 50) + '\nWELCOME TO PLATZI VENTAS\n' + ('*' * 50))
-    print('What do you like to do today?')
-    print('[C]reate client.')
-    print('[U]pdate client.')
-    print('[S]earch client')
-    print('[D]elete client.')
-    print('[L]ist clients')
-    print('[E]xit')
-
-
-def _message_system(num_message):
-    if num_message == 0:
-        return print('Thanks for everything.\nHave a nice day.')
-    elif num_message == 1:
-        return print('Client is in the client\'s list!.')
-    elif  num_message == 2:
-        return print('Client isn\'t in the client\'s list!.')
-    elif  num_message == 3:
-        return print('Invalid command.')
+        print('{uid}: {name} - {company} - {email} - {position}.'.format(
+            uid = idx + 1,
+            name = client['name'], 
+            company = client['company'], 
+            email = client['email'], 
+            position = client['position'],))
 
 
 def _get_client_field(num_option, field_name):
@@ -113,74 +90,116 @@ def _get_client_field(num_option, field_name):
 
     if num_option == 0:
         while not field:
-            field = input('What is the client {}:.\n'.format(field_name)).capitalize()
+            field = input('What is the client {}:.\n'.format(field_name)).lower()
     
     elif num_option == 1:
         while not field:
-            field_name = input('Please, Write the new client {}:\n'.format(field_name)).capitalize()
+            field = input('Please, Write the new client {}:\n'.format(field_name)).lower()
 
     return field
 
 
-def _get_cliente_name(num_option):
-    client_name = None
+def _get_client_from_user(num_option):
+    client = {
+        'name': _get_client_field(num_option,'name'),
+        'company': _get_client_field(num_option,'company'),
+        'email': _get_client_field(num_option,'email'),
+        'position': _get_client_field(num_option,'position'),
+    }
 
-    if num_option == 0:
-        while not client_name:
-            client_name = input('What is the client name?.\n').capitalize()
-        
-    elif num_option == 1:
-        while not client_name:
-            client_name = input('Please, Write the new client name:\n').capitalize()
+    return client
 
-    return client_name
 
+def _message_system(num_message):
+    
+    if num_message == 0.0:
+        return print(('-' * 40) + '\n|' + (' ' * 13) + 
+            'sales system'.upper() + (' ' * 13) + '|\n' + ('-' * 40))
+    
+    elif num_message == 0.1:
+        return print('Thanks for everything.\nHave a nice day.')
+
+    elif  num_message == 0.3:
+        return print('Invalid command.')
+
+    # menus
+    elif  num_message == 1.0:
+        print(
+            'What do you like to do?\n' +
+            '   [C]reate client.\n' +
+            '   [U]pdate client.\n' + 
+            '   [S]earch client.\n' +
+            '   [D]elete client.\n' +
+            '   [L]ist clients.\n' +
+            '   [E]xit.')
+
+    elif  num_message == 1.1:
+        print(
+            'Option for search:\n' +
+            '   [I]d client.\n' +
+            '   [N]ame client.\n' + 
+            '   [E]mail client.\n' +
+            '   [C]ancel.')
+
+    # mensajes de informacion
+    elif  num_message == 2.0:
+        return print('Client is in the client\'s list!.')
+    
+    elif  num_message == 2.1:
+        return print('Client isn\'t in the client\'s list!.')
+
+    
 def crud_scheme():
     while True:
+        command = None
         command = input('\nOption:\t').upper()
         
         if command == 'C':
-            client = {
-                'name': _get_client_field(0,'name'),
-                'company': _get_client_field(0,'company'),
-                'email': _get_client_field(0,'email'),
-                'position': _get_client_field(0,'position')
-            }
-            # client_name = _get_cliente_name(0)
+            client = _get_client_from_user(0)
             create_client(client)
 
         elif command == 'D':
-            client_name = _get_cliente_name(0)
-            delete_client(client_name)
+            client_id = int(_get_client_field(0,'id'))
+            delete_client(client_id)
 
         elif command == 'U':
-            client_name = _get_cliente_name(0)
-            if client_exists(client_name):
-                update_client_name = _get_cliente_name(1)
-                update_client(client_name, update_client_name)
-            else:
-                _message_system(2)
+            client_id = int(_get_client_field(0,'id'))
+            update_info_client = _get_client_from_user(1)
+            update_client(client_id, update_info_client)
 
         elif command == 'L':
             list_client()
 
         elif command == 'S':
-            client_name = _get_cliente_name(0)
-            if client_exists(client_name):
-                _message_system(1)
-            else:
-                _message_system(2)
+            while True:
+                _message_system(1.1)
+                command = input('\nOption:\t').upper()
+                
+                if command == 'N':
+                    search_ref = 'name'
+                    client_search(search_ref,_get_client_field(0,search_ref))
+                    
+                elif command == 'E':
+                    search_ref = 'email'
+                    client_search(search_ref,_get_client_field(0,search_ref))
+                    
+                elif command == 'C':
+                    command = None
+                    break
+
+            _message_system(1.0)
 
         elif command == 'E':
-            _message_system(0)
+            _message_system(0.1)
             break
 
         else:
-            _message_system(3)
+            _message_system(0.3)
 
 
 if __name__ == '__main__':
-    _print_menu()
+    _message_system(0.0)
+    _message_system(1.0)
     
     crud_scheme()
 
